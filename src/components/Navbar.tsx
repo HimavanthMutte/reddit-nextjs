@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Button, Input, Avatar } from "@heroui/react";
+import { Button, Input, Avatar, Popover } from "@heroui/react";
 import { signIn, signOut } from "@/actions/userActions";
 
 import { auth } from "@/auth";
@@ -11,26 +11,39 @@ export default async function Navbar() {
 
   if (session?.user)
     authContent = (
-      <Avatar>
-        <Avatar.Image
-          alt={session.user.name || "user"}
-          src={session.user.image!}
-        />
-        <Avatar.Fallback>
-          {session.user.name![0].trim().toUpperCase()}
-        </Avatar.Fallback>
-      </Avatar>
+      <Popover>
+        <Popover.Trigger>
+          <Avatar>
+            <Avatar.Image
+              alt={session.user.name || "user"}
+              src={session.user.image!}
+            />
+            <Avatar.Fallback>
+              {session.user.name![0].trim().toUpperCase()}
+            </Avatar.Fallback>
+          </Avatar>
+        </Popover.Trigger>
+        <Popover.Content placement="left" className="max-w-64 rounded-md">
+          <Popover.Dialog>
+            <form action={signOut}>
+              <Button type="submit" className="rounded-md" variant="danger">
+                Sign Out
+              </Button>
+            </form>
+          </Popover.Dialog>
+        </Popover.Content>
+      </Popover>
     );
   else {
     authContent = (
       <div className="flex flex-row justify-between gap-3">
         <form action={signIn}>
-          <Button type="submit" variant="outline">
+          <Button type="submit" className="rounded-sm" variant="outline">
             Sign In
           </Button>
         </form>
         <form action={signIn}>
-          <Button type="submit" variant="primary">
+          <Button type="submit" className="rounded-sm" variant="primary">
             Sign Up
           </Button>
         </form>
