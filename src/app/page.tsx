@@ -5,6 +5,8 @@ import { signOut } from "@/actions/userActions";
 
 import { auth } from "@/auth";
 
+import Profile from "@/components/profile";
+
 export default async function Home() {
   const session = await auth();
 
@@ -21,6 +23,7 @@ export default async function Home() {
       ) : (
         <h1>SIGNED OUT</h1>
       )}
+      <Profile />
     </>
   );
 }
