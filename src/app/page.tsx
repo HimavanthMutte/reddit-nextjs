@@ -1,13 +1,5 @@
-import { auth } from "@/auth";
-
-import Navbar from "@/components/Navbar";
+import Header from "@/components/Header";
 
 export default async function Home() {
-  const session = await auth();
-
-  return (
-    <>
-      <Navbar />
-    </>
-  );
+  return <div>Home</div>;
 }
