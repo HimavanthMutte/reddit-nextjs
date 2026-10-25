@@ -1,6 +1,14 @@
 "use client";
 
-import { Button, Popover, Input, Label, TextArea } from "@heroui/react";
+import {
+  Button,
+  Popover,
+  Input,
+  Label,
+  TextArea,
+  TextField,
+  FieldError,
+} from "@heroui/react";
 import { useActionState } from "react";
 import { createTopic } from "@/actions";
 export default function TopicCreateForm() {
@@ -18,34 +26,28 @@ export default function TopicCreateForm() {
             <form action={updatedCreateTopicAction}>
               <div className="flex flex-col gap-4 p-4 w-80">
                 <h3>Create a Topic</h3>
-                <Label htmlFor="input-name">Name</Label>
-                <Input
-                  name="name"
-                  id="input-name"
-                  placeholder="Enter topic name..."
-                  type="text"
-                />
-                {formState.errors.description && (
-                  <div>
-                    <p className="text-[10px] text-red-500">
-                      {formState.errors?.description.join("'")}
-                    </p>
-                  </div>
-                )}
-                <Label htmlFor="input-topic">Description</Label>
-                <TextArea
-                  name="description"
-                  id="input-topic"
-                  placeholder="Describe your topic..."
-                  className="resize-none"
-                />
-                {formState.errors.name && (
-                  <div>
-                    <p className="text-[10px] text-red-500">
-                      {formState.errors?.name.join("'")}
-                    </p>
-                  </div>
-                )}
+                <TextField isInvalid={!!formState.errors?.name?.length}>
+                  <Label htmlFor="input-name">Name</Label>
+                  <Input
+                    name="name"
+                    id="input-name"
+                    placeholder="Enter topic name..."
+                    type="text"
+                  />
+                  <FieldError>{formState.errors?.name?.join("")}</FieldError>
+                </TextField>
+                <TextField isInvalid={!!formState.errors?.description?.length}>
+                  <Label htmlFor="input-topic">Description</Label>
+                  <TextArea
+                    name="description"
+                    id="input-topic"
+                    placeholder="Describe your topic..."
+                    className="resize-none"
+                  />
+                  <FieldError>
+                    {formState.errors?.description?.join("'")}
+                  </FieldError>
+                </TextField>
                 <Button
                   type="submit"
                   variant="primary"
