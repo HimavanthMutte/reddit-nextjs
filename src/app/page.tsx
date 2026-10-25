@@ -3,7 +3,11 @@ import { Button } from "@heroui/react";
 import { signIn } from "@/actions/userActions";
 import { signOut } from "@/actions/userActions";
 
-export default function Home() {
+import { auth } from "@/auth";
+
+export default async function Home() {
+  const session = await auth();
+
   return (
     <>
       <form action={signIn}>
@@ -12,6 +16,7 @@ export default function Home() {
       <form action={signOut}>
         <Button type="submit">Log Out</Button>
       </form>
+      {session?.user ? <h1>SIGNED IN</h1> : <h1>SIGNED OUT</h1>}
     </>
   );
 }
