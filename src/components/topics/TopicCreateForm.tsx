@@ -25,6 +25,13 @@ export default function TopicCreateForm() {
                   placeholder="Enter topic name..."
                   type="text"
                 />
+                {formState.errors.description && (
+                  <div>
+                    <p className="text-[10px] text-red-500">
+                      {formState.errors?.description.join("'")}
+                    </p>
+                  </div>
+                )}
                 <Label htmlFor="input-topic">Description</Label>
                 <TextArea
                   name="description"
@@ -32,6 +39,13 @@ export default function TopicCreateForm() {
                   placeholder="Describe your topic..."
                   className="resize-none"
                 />
+                {formState.errors.name && (
+                  <div>
+                    <p className="text-[10px] text-red-500">
+                      {formState.errors?.name.join("'")}
+                    </p>
+                  </div>
+                )}
                 <Button
                   type="submit"
                   variant="primary"
