@@ -1,7 +1,12 @@
-import { Button, Popover, Input, Label, TextArea } from "@heroui/react";
+"use client";
 
+import { Button, Popover, Input, Label, TextArea } from "@heroui/react";
+import { useActionState } from "react";
 import { createTopic } from "@/actions";
 export default function TopicCreateForm() {
+  const [formState, updatedCreateTopicAction] = useActionState(createTopic, {
+    errors: {},
+  });
   return (
     <div className="flex items-center gap-4">
       <Popover>
@@ -10,7 +15,7 @@ export default function TopicCreateForm() {
         </Popover.Trigger>
         <Popover.Content placement="left">
           <Popover.Dialog>
-            <form action={createTopic}>
+            <form action={updatedCreateTopicAction}>
               <div className="flex flex-col gap-4 p-4 w-80">
                 <h3>Create a Topic</h3>
                 <Label htmlFor="input-name">Name</Label>

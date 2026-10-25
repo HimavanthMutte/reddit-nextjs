@@ -2,6 +2,13 @@
 //we need to revalidate homepage
 import { z } from "zod";
 
+interface CreateTopicFormState {
+  errors: {
+    name?: string[];
+    description?: string[];
+  };
+}
+
 const createTopicSchema = z.object({
   name: z
     .string()
@@ -12,11 +19,17 @@ const createTopicSchema = z.object({
   description: z.string().min(10),
 });
 
-export async function createTopic(formdata: FormData) {
+export async function createTopic(
+  formState: CreateTopicFormState,
+  formdata: FormData,
+): Promise<CreateTopicFormState> {
   const result = createTopicSchema.safeParse({
     name: formdata.get("name"),
     description: formdata.get("description"),
   });
 
-  if (!result.success) console.log(result.error.flatten().fieldErrors);
+  if (!result.success) {
+    return { errors: result.error.flatten().fieldErrors };
+  }
+  return { errors: {} };
 }
