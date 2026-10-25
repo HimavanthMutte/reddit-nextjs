@@ -12,9 +12,12 @@ import {
 import { useActionState } from "react";
 import { createTopic } from "@/actions";
 export default function TopicCreateForm() {
-  const [formState, updatedCreateTopicAction] = useActionState(createTopic, {
-    errors: {},
-  });
+  const [formState, updatedCreateTopicAction, isPending] = useActionState(
+    createTopic,
+    {
+      errors: {},
+    },
+  );
   return (
     <div className="flex items-center gap-4">
       <Popover>
@@ -34,7 +37,7 @@ export default function TopicCreateForm() {
                     placeholder="Enter topic name..."
                     type="text"
                   />
-                  <FieldError>{formState.errors?.name?.join("")}</FieldError>
+                  <FieldError>{formState.errors?.name?.join(",")}</FieldError>
                 </TextField>
                 <TextField isInvalid={!!formState.errors?.description?.length}>
                   <Label htmlFor="input-topic">Description</Label>
@@ -45,7 +48,7 @@ export default function TopicCreateForm() {
                     className="resize-none"
                   />
                   <FieldError>
-                    {formState.errors?.description?.join("'")}
+                    {formState.errors?.description?.join(",")}
                   </FieldError>
                 </TextField>
                 {formState.errors._form ? (
@@ -58,6 +61,7 @@ export default function TopicCreateForm() {
                   variant="primary"
                   fullWidth
                   className="rounded-md shadow-lg"
+                  isDisabled={isPending}
                 >
                   Submit
                 </Button>
