@@ -15,12 +15,14 @@ export default function TopicCreateForm() {
                 <h3>Create a Topic</h3>
                 <Label htmlFor="input-name">Name</Label>
                 <Input
+                  name="name"
                   id="input-name"
                   placeholder="Enter topic name..."
                   type="text"
                 />
                 <Label htmlFor="input-topic">Description</Label>
                 <TextArea
+                  name="description"
                   id="input-topic"
                   placeholder="Describe your topic..."
                   className="resize-none"
