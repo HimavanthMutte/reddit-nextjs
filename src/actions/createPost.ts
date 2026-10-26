@@ -2,8 +2,6 @@
 
 //we need to revalidate both home page and topic page
 
-("use server");
-
 import { z } from "zod";
 import { auth } from "@/auth";
 import type { Post } from "@/generated/prisma/client";
@@ -97,10 +95,10 @@ export async function createPost(
   revalidatePath("/");
 
   console.log("8. Revalidating topicpage");
-  revalidatePath("/topics");
+  revalidatePath(paths.getTopicShowPath(slug));
 
   console.log("9. Redirecting to:", paths.getTopicShowPath(topic.slug));
-  redirect(paths.getTopicShowPath(topic.slug));
+  redirect(paths.getPostShowPath(slug, post.id));
 
   return { errors: {} };
 }
