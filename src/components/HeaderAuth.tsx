@@ -8,8 +8,6 @@ import { signIn, signOut } from "@/actions/userActions";
 export default function HeaderAuth() {
   const session = useSession();
 
-  console.log(session.data);
-
   let authContent;
 
   if (session.data?.user)

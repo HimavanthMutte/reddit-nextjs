@@ -30,16 +30,25 @@ export async function createTopic(
   formState: CreateTopicFormState,
   formdata: FormData,
 ): Promise<CreateTopicFormState> {
+  console.log("1. Action called");
+  console.log("Current form errors:", formState.errors);
   const result = createTopicSchema.safeParse({
     name: formdata.get("name"),
     description: formdata.get("description"),
   });
 
+  console.log("2. Validation result:", result);
+
   if (!result.success) {
     return { errors: result.error.flatten().fieldErrors };
   }
 
+  console.log("3. Validation passed");
+
   const session = await auth();
+  console.log("4. Session:", session?.user?.email);
+
+  // Keep the rest of your existing code here.
   if (!session || !session.user) {
     return {
       errors: {
@@ -49,6 +58,7 @@ export async function createTopic(
   }
 
   let topic: Topic;
+  console.log("5. Creating topic");
 
   try {
     topic = await db.topic.create({
@@ -57,7 +67,11 @@ export async function createTopic(
         description: result.data.description,
       },
     });
+
+    console.log("6. Topic created:", topic);
   } catch (err: unknown) {
+    console.error("DATABASE ERROR:", err);
+
     if (err instanceof Error) {
       return {
         errors: {
@@ -65,13 +79,18 @@ export async function createTopic(
         },
       };
     }
+
     return {
       errors: {
         _form: ["Something went wrong."],
       },
     };
   }
+
+  console.log("7. Revalidating homepage");
   revalidatePath("/");
+
+  console.log("8. Redirecting to:", paths.getTopicShowPath(topic.slug));
   redirect(paths.getTopicShowPath(topic.slug));
 
   return { errors: {} };

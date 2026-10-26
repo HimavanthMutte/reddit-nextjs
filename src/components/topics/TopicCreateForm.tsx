@@ -5,31 +5,40 @@ import {
   Popover,
   Input,
   Label,
+  Form,
   TextArea,
   TextField,
   FieldError,
 } from "@heroui/react";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { createTopic } from "@/actions";
 export default function TopicCreateForm() {
+  const [isOpen, setIsOpen] = useState(false);
   const [formState, updatedCreateTopicAction, isPending] = useActionState(
     createTopic,
     {
       errors: {},
     },
   );
+  console.log("Form state:", JSON.stringify(formState));
   return (
     <div className="flex items-center gap-4">
-      <Popover>
+      <Popover
+        isOpen={isOpen}
+        onOpenChange={(open) => {
+          console.log("Popover open:", open);
+          setIsOpen(open);
+        }}
+      >
         <Popover.Trigger>
           <Button variant="primary">Create Topic</Button>
         </Popover.Trigger>
         <Popover.Content placement="left">
           <Popover.Dialog>
-            <form action={updatedCreateTopicAction}>
+            <Form action={updatedCreateTopicAction}>
               <div className="flex flex-col gap-4 p-4 w-80">
                 <h3>Create a Topic</h3>
-                <TextField isInvalid={!!formState.errors?.name?.length}>
+                <TextField>
                   <Label htmlFor="input-name">Name</Label>
                   <Input
                     name="name"
@@ -37,9 +46,13 @@ export default function TopicCreateForm() {
                     placeholder="Enter topic name..."
                     type="text"
                   />
-                  <FieldError>{formState.errors?.name?.join(",")}</FieldError>
+                  {formState.errors.name?.map((error) => (
+                    <p key={error} className="text-sm text-red-600">
+                      {error}
+                    </p>
+                  ))}
                 </TextField>
-                <TextField isInvalid={!!formState.errors?.description?.length}>
+                <TextField>
                   <Label htmlFor="input-topic">Description</Label>
                   <TextArea
                     name="description"
@@ -47,9 +60,11 @@ export default function TopicCreateForm() {
                     placeholder="Describe your topic..."
                     className="resize-none"
                   />
-                  <FieldError>
-                    {formState.errors?.description?.join(",")}
-                  </FieldError>
+                  {formState.errors.description?.map((error) => (
+                    <p key={error} className="text-sm text-red-600">
+                      {error}
+                    </p>
+                  ))}
                 </TextField>
                 {formState.errors._form ? (
                   <div className="p-2 bg-red-300 border border-red-400">
@@ -66,7 +81,7 @@ export default function TopicCreateForm() {
                   Submit
                 </Button>
               </div>
-            </form>
+            </Form>
           </Popover.Dialog>
         </Popover.Content>
       </Popover>
