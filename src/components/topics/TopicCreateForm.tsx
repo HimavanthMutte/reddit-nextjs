@@ -13,23 +13,17 @@ import {
 import { useActionState, useState } from "react";
 import { createTopic } from "@/actions";
 export default function TopicCreateForm() {
-  const [isOpen, setIsOpen] = useState(false);
   const [formState, updatedCreateTopicAction, isPending] = useActionState(
     createTopic,
     {
       errors: {},
     },
   );
-  console.log("Form state:", JSON.stringify(formState));
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   return (
     <div className="flex items-center gap-4">
-      <Popover
-        isOpen={isOpen}
-        onOpenChange={(open) => {
-          console.log("Popover open:", open);
-          setIsOpen(open);
-        }}
-      >
+      <Popover>
         <Popover.Trigger>
           <Button variant="primary">Create Topic</Button>
         </Popover.Trigger>
@@ -45,6 +39,10 @@ export default function TopicCreateForm() {
                     id="input-name"
                     placeholder="Enter topic name..."
                     type="text"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
                   />
                   {formState.errors.name?.map((error) => (
                     <p key={error} className="text-sm text-red-600">
@@ -59,6 +57,10 @@ export default function TopicCreateForm() {
                     id="input-topic"
                     placeholder="Describe your topic..."
                     className="resize-none"
+                    value={description}
+                    onChange={(e) => {
+                      setDescription(e.target.value);
+                    }}
                   />
                   {formState.errors.description?.map((error) => (
                     <p key={error} className="text-sm text-red-600">
