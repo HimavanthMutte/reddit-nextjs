@@ -8,7 +8,6 @@ import {
   Form,
   TextArea,
   TextField,
-  FieldError,
 } from "@heroui/react";
 import { useActionState, useState } from "react";
 import { createTopic } from "@/actions";
