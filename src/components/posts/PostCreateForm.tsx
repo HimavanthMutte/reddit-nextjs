@@ -55,11 +55,11 @@ export default function PostCreateForm({ slug }: PostCreateFormProps) {
                   ))}
                 </TextField>
                 <TextField>
-                  <Label htmlFor="input-topic">Description</Label>
+                  <Label htmlFor="input-content">Content</Label>
                   <TextArea
-                    name="description"
-                    id="input-topic"
-                    placeholder="Describe your topic..."
+                    name="content"
+                    id="input-content"
+                    placeholder="Type here..."
                     className="resize-none"
                     value={content}
                     onChange={(e) => {
